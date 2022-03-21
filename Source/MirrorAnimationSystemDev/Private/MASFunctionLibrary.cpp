@@ -498,10 +498,8 @@ MIRRORANIMATIONSYSTEMDEV_API void UMASFunctionLibrary::CreateMirrorSequenceFromA
 
 	USkeleton* Skeleton = MirrorSequence->GetSkeleton();
 	const auto& RefSkeleton = Skeleton->GetReferenceSkeleton();
-
 	
-
-	TArray <bool> Already; Already.SetNumZeroed(Skeleton->GetBoneTree().Num());
+	//TArray <bool> Already; Already.SetNumZeroed(Skeleton->GetBoneTree().Num());
 
 	TArray<FIntPoint> TwinPairs;
 	TArray<int32> NonTwinIDs;
@@ -581,7 +579,7 @@ MIRRORANIMATIONSYSTEMDEV_API void UMASFunctionLibrary::CreateMirrorSequenceFromA
 
 			const bool SameParent = ParentIndex == TwinParentIndex;
 
-			// twin 1º
+			// twin 1ï¿½
 			{
 				const FTransform MirrRef = RefTM * TwinMirrorModTM;
 				const FTransform Delta = TwinRefTM.GetRelativeTransform(MirrRef);
@@ -618,7 +616,7 @@ MIRRORANIMATIONSYSTEMDEV_API void UMASFunctionLibrary::CreateMirrorSequenceFromA
 				NewCSTMs[TwinBoneIndex] = MirrTM;
 			}
 
-			// twin 2º
+			// twin 2ï¿½
 			{
 				FTransform TwinMirrRef = TwinRefTM * TwinMirrorModTM;
 				const FQuat TwinDeltaQuat = TwinMirrRef.GetRotation().Inverse() * RefTM.GetRotation();

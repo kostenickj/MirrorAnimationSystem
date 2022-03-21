@@ -41,7 +41,7 @@ void FAnimNode_MirrorCS::EvaluateSkeletalControl_AnyThread(FComponentSpacePoseCo
 		TArray <FTransform> NewCSTMs; NewCSTMs.SetNum(Output.Pose.GetPose().GetNumBones());
 
 		const USkeletalMeshComponent* SkelComp = Output.AnimInstanceProxy->GetSkelMeshComponent();
-		const auto& RefSkeleton = SkelComp->SkeletalMesh->RefSkeleton;
+		const auto& RefSkeleton = SkelComp->SkeletalMesh->GetRefSkeleton();
 		
 
 		FVector TwinMirrorScale = FVector(1.f);
@@ -88,7 +88,7 @@ void FAnimNode_MirrorCS::EvaluateSkeletalControl_AnyThread(FComponentSpacePoseCo
 			
 		
 
-			// twin 1º
+			// twin 1ï¿½
 			{
 				const FTransform MirrRef = RefTM * TwinMirrorModTM;
 				const FTransform Delta = TwinRefTM.GetRelativeTransform(MirrRef);
@@ -126,7 +126,7 @@ void FAnimNode_MirrorCS::EvaluateSkeletalControl_AnyThread(FComponentSpacePoseCo
 				NewCSTMs[TwinBoneIndex] = MirrTM;
 			}
 
-			// twin 2º
+			// twin 2ï¿½
 			{
 				FTransform TwinMirrRef = TwinRefTM * TwinMirrorModTM;
 				const FQuat TwinDeltaQuat = TwinMirrRef.GetRotation().Inverse() * RefTM.GetRotation();
