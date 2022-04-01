@@ -1,17 +1,17 @@
 // Copyright 2017-2021 Rexocrates. All Rights Reserved.
-#include "AnimNode_Mirror.h"
+#include "AnimNodeTable_Mirror.h"
 #include "MirrorAnimationSystem.h"
 
 //#include "AnimationRuntime.h"
 
-FAnimNode_Mirror::FAnimNode_Mirror()
+FAnimNodeTable_Mirror::FAnimNodeTable_Mirror()
 	: 
 	MirrorTable(NULL)
 {
 
 }
 
-void FAnimNode_Mirror::Initialize_AnyThread(const FAnimationInitializeContext & Context)
+void FAnimNodeTable_Mirror::Initialize_AnyThread(const FAnimationInitializeContext & Context)
 {
 	
 	FAnimNode_Base::Initialize_AnyThread(Context);
@@ -19,20 +19,20 @@ void FAnimNode_Mirror::Initialize_AnyThread(const FAnimationInitializeContext & 
 	BasePose.Initialize(Context);
 }
 
-void FAnimNode_Mirror::CacheBones_AnyThread(const FAnimationCacheBonesContext & Context)
+void FAnimNodeTable_Mirror::CacheBones_AnyThread(const FAnimationCacheBonesContext & Context)
 {
 	
 	BasePose.CacheBones(Context);
 }
 
-void FAnimNode_Mirror::Update_AnyThread(const FAnimationUpdateContext & Context)
+void FAnimNodeTable_Mirror::Update_AnyThread(const FAnimationUpdateContext & Context)
 {
 	GetEvaluateGraphExposedInputs().Execute(Context);
 	BasePose.Update(Context);
 }
 
 
-void FAnimNode_Mirror::Evaluate_AnyThread(FPoseContext & Output)
+void FAnimNodeTable_Mirror::Evaluate_AnyThread(FPoseContext & Output)
 {
 	// Evaluate the input
 
@@ -143,7 +143,7 @@ void FAnimNode_Mirror::Evaluate_AnyThread(FPoseContext & Output)
 }
 
 
-void FAnimNode_Mirror::GatherDebugData(FNodeDebugData & DebugData)
+void FAnimNodeTable_Mirror::GatherDebugData(FNodeDebugData & DebugData)
 {
 	FString DebugLine = DebugData.GetNodeName(this);
 

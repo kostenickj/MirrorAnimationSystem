@@ -2,18 +2,18 @@
 
 #pragma once
 #include "AnimGraphNode_Base.h"
-#include "AnimNode_Mirror.h"
-#include "AnimGraphNode_Mirror.generated.h"
+#include "AnimNodeTable_Mirror.h"
+#include "AnimGraphNodeTable_Mirror.generated.h"
 /**
  * 
  */
 /*class that holds Editor version of the AnimGraph Node Mirror Pose, along its tittle, tooltip, Node Color, and the category of the node*/
 UCLASS()
-class MIRRORANIMATIONSYSTEMEDITOR_API UAnimGraphNode_Mirror : public UAnimGraphNode_Base
+class MIRRORANIMATIONSYSTEMEDITOR_API UAnimGraphNodeTable_Mirror : public UAnimGraphNode_Base
 {
 	GENERATED_BODY()
 	UPROPERTY(EditAnywhere, Category = Settings)
-		FAnimNode_Mirror Node;
+		FAnimNodeTable_Mirror Node;
 
 	//~ Begin UEdGraphNode Interface.
 	virtual FLinearColor GetNodeTitleColor() const override;
@@ -25,5 +25,5 @@ class MIRRORANIMATIONSYSTEMEDITOR_API UAnimGraphNode_Mirror : public UAnimGraphN
 	virtual FString GetNodeCategory() const override;
 	//~ End UAnimGraphNode_Base Interface
 
-	UAnimGraphNode_Mirror(const FObjectInitializer& ObjectInitializer);
+	UAnimGraphNodeTable_Mirror(const FObjectInitializer& ObjectInitializer);
 };

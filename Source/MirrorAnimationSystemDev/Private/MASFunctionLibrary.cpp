@@ -12,7 +12,6 @@
 #if WITH_EDITOR
 #include "AssetToolsModule.h"
 #include "AssetRegistryModule.h"
-#include "Toolkits/AssetEditorManager.h"
 
 #include "Framework/Notifications/NotificationManager.h"
 #include "Widgets/Notifications/SNotificationList.h"
@@ -180,13 +179,13 @@ void UMASFunctionLibrary::CreateMirrorSequenceFromAnimSequence(UAnimSequence* Mi
 					continue;
 				}
 
-				TArray <FVector> MirrorPosKeys;
-				TArray <FQuat> MirrorRotKeys;
-				TArray <FVector> MirrorScaleKeys;
+				TArray <FVector3f> MirrorPosKeys;
+				TArray <FQuat4f> MirrorRotKeys;
+				TArray <FVector3f> MirrorScaleKeys;
 
-				TArray <FVector> TwinMirrorPosKeys;
-				TArray <FQuat> TwinMirrorRotKeys;
-				TArray <FVector> TwinMirrorScaleKeys;
+				TArray <FVector3f> TwinMirrorPosKeys;
+				TArray <FQuat4f> TwinMirrorRotKeys;
+				TArray <FVector3f> TwinMirrorScaleKeys;
 
 				// Original Bone
 				if (TrackIndex != INDEX_NONE)
@@ -195,7 +194,7 @@ void UMASFunctionLibrary::CreateMirrorSequenceFromAnimSequence(UAnimSequence* Mi
 
 					for (int u = 0; u < NumFrames; u++)
 					{
-						FTransform MirrorTM;
+						FTransform<float> MirrorTM;
 
 						bool bSetPos = false;
 						bool bSetRot = false;
@@ -259,8 +258,8 @@ void UMASFunctionLibrary::CreateMirrorSequenceFromAnimSequence(UAnimSequence* Mi
 					RefTM.SetScale3D(RefTM.GetScale3D().GetAbs());
 					RefTM.NormalizeRotation();
 
-					MirrorPosKeys.Add(RefTM.GetTranslation());
-					MirrorRotKeys.Add(RefTM.GetRotation());
+					MirrorPosKeys.Add( FVector3f(RefTM.GetTranslation()));
+					MirrorRotKeys.Add(FQuat4f(RefTM.GetRotation()));
 				}
 
 				// Twin Bone
@@ -270,7 +269,7 @@ void UMASFunctionLibrary::CreateMirrorSequenceFromAnimSequence(UAnimSequence* Mi
 
 					for (int u = 0; u < NumFrames; u++)
 					{
-						FTransform TwinMirrorTM;
+						FTransform<float> TwinMirrorTM;
 
 						bool TwinbSetPos = false;
 						bool TwinbSetRot = false;
@@ -334,8 +333,8 @@ void UMASFunctionLibrary::CreateMirrorSequenceFromAnimSequence(UAnimSequence* Mi
 					RefTM.SetScale3D(RefTM.GetScale3D().GetAbs());
 					RefTM.NormalizeRotation();
 
-					TwinMirrorPosKeys.Add(RefTM.GetTranslation());
-					TwinMirrorRotKeys.Add(RefTM.GetRotation());
+					TwinMirrorPosKeys.Add( FVector3f(RefTM.GetTranslation()));
+					TwinMirrorRotKeys.Add(FQuat4f(RefTM.GetRotation()));
 				}
 
 				// Original Bone -> Twin Bone
@@ -372,14 +371,14 @@ void UMASFunctionLibrary::CreateMirrorSequenceFromAnimSequence(UAnimSequence* Mi
 				FRawAnimSequenceTrack MirroredRawTrack = SourceRawAnimDatas[TrackIndex];
 
 				//MirrorAllFrames
-				TArray <FVector> MirrorPosKeys;
-				TArray <FQuat> MirrorRotKeys;
-				TArray <FVector> MirrorScaleKeys;
+				TArray <FVector3f> MirrorPosKeys;
+				TArray <FQuat4f> MirrorRotKeys;
+				TArray <FVector3f> MirrorScaleKeys;
 
 				for (int u = 0; u < NumFrames; u++)
 				{
 					//Mirror Transform
-					FTransform MirrorTM;
+					FTransform3f MirrorTM;
 
 					bool bSetPos = false;
 					bool bSetRot = false;
@@ -387,7 +386,7 @@ void UMASFunctionLibrary::CreateMirrorSequenceFromAnimSequence(UAnimSequence* Mi
 
 					if (MirroredRawTrack.PosKeys.IsValidIndex(u))
 					{
-						MirrorTM.SetTranslation(MirroredRawTrack.PosKeys[u]);
+						MirrorTM.SetTranslation( MirroredRawTrack.PosKeys[u]);
 						bSetPos = true;
 					}
 					if (MirroredRawTrack.RotKeys.IsValidIndex(u))
@@ -403,13 +402,13 @@ void UMASFunctionLibrary::CreateMirrorSequenceFromAnimSequence(UAnimSequence* Mi
 
 					MirrorTM.Mirror(CurrentBone.MirrorAxis, CurrentBone.FlipAxis);
 
-					FRotator BoneNewRotation = MirrorTM.Rotator();
+					FRotator3f BoneNewRotation = MirrorTM.Rotator();
 
 					BoneNewRotation.Yaw += CurrentBone.RotationOffset.Yaw;
 					BoneNewRotation.Roll += CurrentBone.RotationOffset.Roll;
 					BoneNewRotation.Pitch += CurrentBone.RotationOffset.Pitch;
 
-					MirrorTM.SetRotation(FQuat(BoneNewRotation));
+					MirrorTM.SetRotation(FQuat4f(BoneNewRotation));
 					//MirrorTM.NormalizeRotation();
 					MirrorTM.SetScale3D(MirrorTM.GetScale3D().GetAbs());
 
@@ -657,14 +656,14 @@ MIRRORANIMATIONSYSTEMDEV_API void UMASFunctionLibrary::CreateMirrorSequenceFromA
 		for (int32 i = 0; i < NewCSTMs.Num(); i++)
 		{
 			const int32 ParentIndex = RefSkeleton.GetParentIndex(i);
-			FTransform BSTM;
+			FTransform3d BSTM;
 			if (ParentIndex != INDEX_NONE) BSTM = NewCSTMs[i].GetRelativeTransform(NewCSTMs[ParentIndex]);
 			else BSTM = NewCSTMs[i];
 
 			auto& BoneTrack = BoneTracks[i];
-			BoneTrack.PosKeys.Add(BSTM.GetLocation());
-			BoneTrack.RotKeys.Add(BSTM.GetRotation());
-			BoneTrack.ScaleKeys.Add(BSTM.GetScale3D());
+			BoneTrack.PosKeys.Add( FVector3f(BSTM.GetLocation()));
+			BoneTrack.RotKeys.Add(FQuat4f(BSTM.GetRotation()));
+			BoneTrack.ScaleKeys.Add(FVector3f(BSTM.GetScale3D()));
 		}
 	}
 
