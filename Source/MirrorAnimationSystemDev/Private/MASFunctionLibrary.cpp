@@ -194,7 +194,7 @@ void UMASFunctionLibrary::CreateMirrorSequenceFromAnimSequence(UAnimSequence* Mi
 
 					for (int u = 0; u < NumFrames; u++)
 					{
-						FTransform<float> MirrorTM;
+						FTransform3f MirrorTM;
 
 						bool bSetPos = false;
 						bool bSetRot = false;
@@ -218,13 +218,13 @@ void UMASFunctionLibrary::CreateMirrorSequenceFromAnimSequence(UAnimSequence* Mi
 
 						MirrorTM.Mirror(CurrentBone.MirrorAxis, CurrentBone.FlipAxis);
 
-						FRotator BoneNewRotation = MirrorTM.Rotator();
+						FRotator3f BoneNewRotation = MirrorTM.Rotator();
 
 						BoneNewRotation.Yaw += CurrentBone.RotationOffset.Yaw;
 						BoneNewRotation.Roll += CurrentBone.RotationOffset.Roll;
 						BoneNewRotation.Pitch += CurrentBone.RotationOffset.Pitch;
 
-						MirrorTM.SetRotation(FQuat(BoneNewRotation));
+						MirrorTM.SetRotation(FQuat4f(BoneNewRotation));
 						MirrorTM.SetScale3D(MirrorTM.GetScale3D().GetAbs());
 						MirrorTM.NormalizeRotation();
 
@@ -269,7 +269,7 @@ void UMASFunctionLibrary::CreateMirrorSequenceFromAnimSequence(UAnimSequence* Mi
 
 					for (int u = 0; u < NumFrames; u++)
 					{
-						FTransform<float> TwinMirrorTM;
+						FTransform3f TwinMirrorTM;
 
 						bool TwinbSetPos = false;
 						bool TwinbSetRot = false;
@@ -293,13 +293,13 @@ void UMASFunctionLibrary::CreateMirrorSequenceFromAnimSequence(UAnimSequence* Mi
 
 						TwinMirrorTM.Mirror(CurrentBone.MirrorAxis, CurrentBone.FlipAxis);
 
-						FRotator TwinBoneNewRotation = TwinMirrorTM.Rotator();
+						FRotator3f TwinBoneNewRotation = TwinMirrorTM.Rotator();
 
 						TwinBoneNewRotation.Yaw += CurrentBone.RotationOffset.Yaw;
 						TwinBoneNewRotation.Roll += CurrentBone.RotationOffset.Roll;
 						TwinBoneNewRotation.Pitch += CurrentBone.RotationOffset.Pitch;
 
-						TwinMirrorTM.SetRotation(FQuat(TwinBoneNewRotation));
+						TwinMirrorTM.SetRotation(FQuat4f(TwinBoneNewRotation));
 						TwinMirrorTM.SetScale3D(TwinMirrorTM.GetScale3D().GetAbs());
 						TwinMirrorTM.NormalizeRotation();
 
